@@ -2,19 +2,22 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RazorPagesMovie.Models
+namespace ServiceLayer.MovieServices
 {
-    public class Movie
+    public class MovieDto
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
+
+        [Required]
         public string Title { get; set; }
 
         [Display(Name = "Release Date")]
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
-        public string Genre { get; set; }
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
+
+        public string Genre { get; set; }
     }
 }

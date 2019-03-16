@@ -4,7 +4,7 @@ using RazorPagesMovie.Data;
 using System;
 using System.Linq;
 
-namespace RazorPagesMovie.Models
+namespace DataLayer.Models
 {
     public static class SeedData
     {
@@ -14,17 +14,24 @@ namespace RazorPagesMovie.Models
                 serviceProvider.GetRequiredService<DbContextOptions<RazorPagesMovieContext>>()))
             {
                 // Look for any movies.
-                if (context.Movie.Any())
+                if (context.Movies.Any())
                 {
                     return;   // DB has been seeded
                 }
 
-                context.Movie.AddRange(
+                context.Genres.AddRange(
+                        new Genre { GenreName = "Romantic Comedy" },
+                        new Genre { GenreName = "Comedy" },
+                        new Genre { GenreName = "Western" }
+                    );
+                context.SaveChanges();
+
+                context.Movies.AddRange(
                     new Movie
                     {
                         Title = "When Harry Met Sally",
                         ReleaseDate = DateTime.Parse("1989-2-12"),
-                        Genre = "Romantic Comedy",
+                        GenreId = 1,
                         Price = 7.99M
                     },
 
@@ -32,7 +39,7 @@ namespace RazorPagesMovie.Models
                     {
                         Title = "Ghostbusters ",
                         ReleaseDate = DateTime.Parse("1984-3-13"),
-                        Genre = "Comedy",
+                        GenreId = 2,
                         Price = 8.99M
                     },
 
@@ -40,7 +47,7 @@ namespace RazorPagesMovie.Models
                     {
                         Title = "Ghostbusters 2",
                         ReleaseDate = DateTime.Parse("1986-2-23"),
-                        Genre = "Comedy",
+                        GenreId = 2,
                         Price = 9.99M
                     },
 
@@ -48,7 +55,7 @@ namespace RazorPagesMovie.Models
                     {
                         Title = "Rio Bravo",
                         ReleaseDate = DateTime.Parse("1959-4-15"),
-                        Genre = "Western",
+                        GenreId = 3,
                         Price = 3.99M
                     }
                 );

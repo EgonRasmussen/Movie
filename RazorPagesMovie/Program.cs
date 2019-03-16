@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore;
+﻿using DataLayer.Models;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using RazorPagesMovie.Data;
-using RazorPagesMovie.Models;
 using System;
 
 namespace RazorPagesMovie

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPagesMovie.Data;
-using RazorPagesMovie.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -21,7 +21,7 @@ namespace RazorPagesMovie.Pages.Movies
             Movie = new Movie
             {
                 Title = "The Good, the bad, and the ugly",
-                Genre = "Western",
+                GenreId = 3,
                 Price = 1.19M,
                 ReleaseDate = DateTime.Now
                 //   ,                Rating = "NA"
@@ -39,7 +39,7 @@ namespace RazorPagesMovie.Pages.Movies
                 return Page();
             }
 
-            _context.Movie.Add(Movie);
+            //_context.Movie.Add(Movie);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RazorPagesMovie.Models;
+﻿using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace RazorPagesMovie.Data
 {
@@ -10,6 +10,7 @@ namespace RazorPagesMovie.Data
         {
         }
 
-        public DbSet<Movie> Movie { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Genre> Genres { get; set; }
     }
 }

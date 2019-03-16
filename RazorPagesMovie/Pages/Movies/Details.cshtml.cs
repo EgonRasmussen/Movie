@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Data;
-using RazorPagesMovie.Models;
 using System.Threading.Tasks;
 
 namespace RazorPagesMovie.Pages.Movies
@@ -25,7 +25,7 @@ namespace RazorPagesMovie.Pages.Movies
                 return NotFound();
             }
 
-            Movie = await _context.Movie.FirstOrDefaultAsync(m => m.ID == id);
+            Movie = await _context.Movies.FirstOrDefaultAsync(m => m.ID == id);
 
             if (Movie == null)
             {
