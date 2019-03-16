@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using RazorPagesMovie.Data;
 using ServiceLayer.MovieServices;
 using System;
 using System.Collections.Generic;
@@ -14,11 +12,13 @@ namespace RazorPagesMovie.Pages.Movies
 {
     public class IndexModel : PageModel
     {
-        private readonly IMovieService _service;
+        private readonly IMovieService _movieService;
+        private readonly IGenreService _genreService;
 
-        public IndexModel(IMovieService service)
+        public IndexModel(IMovieService movieService, IGenreService genreService)
         {
-            _service = service;
+            _movieService = movieService;
+            _genreService = genreService;
         }
 
         public IList<MovieDto> Movies { get; set; }
@@ -35,22 +35,10 @@ namespace RazorPagesMovie.Pages.Movies
 
         public async Task OnGetAsync()
         {
+            Genres = new SelectList(await _genreService.GetGenres(), nameof(Genre.GenreId), nameof(Genre.GenreName));
 
-            //var movies = from m in _context.Movie
-            //             select m;
-
-            //if (!String.IsNullOrEmpty(SearchString))
-            //{
-            //    movies = movies.Where(s => s.Title.Contains(SearchString));
-            //}
-
-            //if (!String.IsNullOrEmpty(MovieGenre))
-            //{
-            //    //movies = movies.Where(x => x.GenreId == MovieGenre);
-            //}
-            //Genres = new SelectList(await genreQuery.Distinct().ToListAsync());
-
-            Movies = await _service.GetMovies().ToListAsync();
+            //Movies = _movieService.GetMovies().ToList();
+            Movies = _movieService.GetMovies(SearchString, Convert.ToInt32(MovieGenre)).ToList();
         }
     }
 }

@@ -18,6 +18,9 @@ namespace ServiceLayer.MovieServices
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }
 
-        public string Genre { get; set; }
+        public int GenreId { get; set; }
+
+        [Display(Name = "Genre")]
+        public string GenreName { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+# Extending Movie projekt
 
 Exclude RazorPages: Add, Detail, Edit og Delete
 
@@ -16,6 +17,7 @@ Build og lav nye migration og slet og opdater DB
 Tilret Index pagen således at der kan vises en liste med tilhørende Genre.
 
 -----------------------------------------------
+### Opret arkitektur og Service
 
 Tilføj DataLayer og ServiceLayer projekterne (.NET Standard)
 
@@ -37,9 +39,9 @@ I ServiceLayer laves folderen MovieServices med disse 3 klasser:
 * IMovieService.cs
 * MovieService.cs
 
-Lad MovieDto klassen indeholde de properties fra både Movie og Genrer entiteterne, som skal vises i Index
+Lad MovieDto klassen indeholde de properties fra både Movie og Genrer entiteterne, som skal vises i Index (alle undtagen navigation)
 
-Definer metoden GetMovies, som returnerer IQueryable typet til MovieDto.
+Definer metoden GetMovies(), som returnerer IQueryable typet til MovieDto.
 
 Implementer GetMovies med DI fra Contexten og lave projektion fra Movie til MovieDto klassen.
 
@@ -50,3 +52,26 @@ Benyt MovieService i Index pagen og ret den til.
 Build og prøv at debugge indtil de 4 film præsenteres med tilhørende genre. Filteret behøver ikke virke nu.
 
 https://github.com/JonPSmith/EfCoreInAction/tree/Chapter10/ServiceLayer/BookServices
+
+----------------------------------------------
+
+### Genre Service
+
+Udvid MovieService med GenreService og metoden GetGenres(). Lad den returnere en IEnumerable<Genre>.
+
+I Index.cs oprettes et object af typen SelectList, som benytter GetGenres() og sætter de to properties til GenreId og GenreText.
+
+Test at Select-listen bliver befolket.
+
+
+### Search
+
+Udvid MovieService med GetMovies(string searchString, int genreId).
+
+I GetMovies skal der først laves en Projection til DTO-klassen, derefter testes på searchString og genreId parametrene.
+Til sidst kan den samlede query returneres. Men den eksekveres oppe i PageModel.
+
+Nu skal man kunne søge både på Genre og fritekst på titlen.
+
+-----------------------------------------------------------
+
