@@ -10,15 +10,21 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<form>
-    <p>
+
+<form method="get">
+    <div class="input-group mb-3 col-md-6">
         <select asp-for="MovieGenre" asp-items="Model.Genres">
             <option value="">All</option>
         </select>
-        Title: <input type="text" asp-for="SearchString" />
-        <input type="submit" value="Filter" />
-    </p>
+        <input type="search" asp-for="SearchString" class="form-control" placeholder="Search Title">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
 </form>
+
 <table class="table">
     <thead>
         <tr>

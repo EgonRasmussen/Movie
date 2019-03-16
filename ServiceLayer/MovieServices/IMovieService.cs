@@ -7,5 +7,10 @@ namespace ServiceLayer.MovieServices
     {
         IQueryable<MovieDto> GetMovies();
         IQueryable<MovieDto> GetMovies(string searchString, int genreId);
+        Task <MovieDto> GetMovieById(int id);
+        bool MovieExists(int id);
+        Task UpdateMovie(MovieDto movie);
+        Task DeleteMovie(int id);
+        Task CreateMovie(MovieDto movie);
     }
 }

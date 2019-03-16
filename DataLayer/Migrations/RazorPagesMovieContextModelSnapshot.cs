@@ -31,6 +31,23 @@ namespace DataLayer.Migrations
                     b.HasKey("GenreId");
 
                     b.ToTable("Genres");
+
+                    b.HasData(
+                        new
+                        {
+                            GenreId = 1,
+                            GenreName = "Romantic Comedy"
+                        },
+                        new
+                        {
+                            GenreId = 2,
+                            GenreName = "Comedy"
+                        },
+                        new
+                        {
+                            GenreId = 3,
+                            GenreName = "Western"
+                        });
                 });
 
             modelBuilder.Entity("DataLayer.Models.Movie", b =>
@@ -54,6 +71,40 @@ namespace DataLayer.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("Movies");
+
+                    b.HasData(
+                        new
+                        {
+                            MovieId = 1,
+                            GenreId = 1,
+                            Price = 7.99m,
+                            ReleaseDate = new DateTime(1989, 2, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "When Harry Met Sally"
+                        },
+                        new
+                        {
+                            MovieId = 2,
+                            GenreId = 2,
+                            Price = 8.99m,
+                            ReleaseDate = new DateTime(1984, 3, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Ghostbusters "
+                        },
+                        new
+                        {
+                            MovieId = 3,
+                            GenreId = 2,
+                            Price = 9.99m,
+                            ReleaseDate = new DateTime(1986, 2, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Ghostbusters 2"
+                        },
+                        new
+                        {
+                            MovieId = 4,
+                            GenreId = 3,
+                            Price = 3.99m,
+                            ReleaseDate = new DateTime(1959, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Rio Bravo"
+                        });
                 });
 
             modelBuilder.Entity("DataLayer.Models.Movie", b =>

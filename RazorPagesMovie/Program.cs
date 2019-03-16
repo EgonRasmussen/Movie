@@ -1,5 +1,4 @@
-﻿using DataLayer.Models;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +22,7 @@ namespace RazorPagesMovie
                 {
                     var context = services.GetRequiredService<RazorPagesMovieContext>();
                     context.Database.Migrate();
-                    SeedData.Initialize(services);
+                    //SeedData.Initialize(services);
                 }
                 catch (Exception ex)
                 {

@@ -1,23 +1,21 @@
-﻿using DataLayer.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using RazorPagesMovie.Data;
+using ServiceLayer.MovieServices;
 using System.Threading.Tasks;
 
 namespace RazorPagesMovie.Pages.Movies
 {
     public class DeleteModel : PageModel
     {
-        private readonly RazorPagesMovieContext _context;
+        private readonly IMovieService _movieService;
 
-        public DeleteModel(RazorPagesMovieContext context)
+        public DeleteModel(IMovieService movieService)
         {
-            _context = context;
+            _movieService = movieService;
         }
 
         [BindProperty]
-        public Movie Movie { get; set; }
+        public MovieDto Movie { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -26,7 +24,7 @@ namespace RazorPagesMovie.Pages.Movies
                 return NotFound();
             }
 
-            Movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            Movie = await _movieService.GetMovieById(id.Value);
 
             if (Movie == null)
             {
@@ -42,12 +40,11 @@ namespace RazorPagesMovie.Pages.Movies
                 return NotFound();
             }
 
-            Movie = await _context.Movies.FindAsync(id);
+            Movie = await _movieService.GetMovieById(id.Value);
 
             if (Movie != null)
             {
-                _context.Movies.Remove(Movie);
-                await _context.SaveChangesAsync();
+                await _movieService.DeleteMovie(id.Value);
             }
 
             return RedirectToPage("./Index");

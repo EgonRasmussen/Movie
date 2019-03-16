@@ -1,22 +1,21 @@
-﻿using DataLayer.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using RazorPagesMovie.Data;
+using ServiceLayer.MovieServices;
 using System.Threading.Tasks;
 
 namespace RazorPagesMovie.Pages.Movies
 {
     public class DetailsModel : PageModel
     {
-        private readonly RazorPagesMovieContext _context;
+        private readonly IMovieService _movieService;
 
-        public DetailsModel(RazorPagesMovieContext context)
+        public DetailsModel(IMovieService movieService)
         {
-            _context = context;
+            _movieService = movieService;
         }
 
-        public Movie Movie { get; set; }
+
+        public MovieDto Movie { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -25,7 +24,7 @@ namespace RazorPagesMovie.Pages.Movies
                 return NotFound();
             }
 
-            Movie = await _context.Movies.FirstOrDefaultAsync(m => m.ID == id);
+            Movie = await _movieService.GetMovieById(id.Value);
 
             if (Movie == null)
             {

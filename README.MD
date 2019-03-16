@@ -1,5 +1,7 @@
 # Extending Movie projekt
 
+https://github.com/aspnet/Docs/tree/master/aspnetcore/tutorials/razor-pages/razor-pages-start/2.2-stage-samples/RPmovieSearch
+
 Exclude RazorPages: Add, Detail, Edit og Delete
 
 Rename ID property i Movie til MovieId
@@ -51,6 +53,8 @@ Benyt MovieService i Index pagen og ret den til.
 
 Build og prøv at debugge indtil de 4 film præsenteres med tilhørende genre. Filteret behøver ikke virke nu.
 
+Flyt seeding over i Seeding Data i Contexten.
+
 https://github.com/JonPSmith/EfCoreInAction/tree/Chapter10/ServiceLayer/BookServices
 
 ----------------------------------------------
@@ -75,3 +79,25 @@ Nu skal man kunne søge både på Genre og fritekst på titlen.
 
 -----------------------------------------------------------
 
+### Details Page
+
+Opret metoden MovieDto GetMovieById(int id) i MovieService og implementer den.
+
+Tilpas PageModel til DI af MovieService og kald af GetMovieById().
+
+### Edit Page
+
+Opret metoden MovieDto UpdateMovie(MovieDto movie) i MovieService og implementer den.
+Lav også helper-metoden bool MovieExists(int id) og implementer den.
+
+Tilpas PageModel til DI af MovieService og kald af UpdateMovie(). Tilpas også Get-delen. Tilføj hidden felt til GenreId.
+
+### Delte Page
+
+Opret metoden DeleteMovie(Movie movie) i MovieService og implementer den.
+Tilpas PageModel til DI af MovieService og kald af DeleteMovie(). Tilpas også Get-delen.
+
+### Create Page
+
+Opret metoden CreateMovie(MovieDto movie) i MovieService og implementer den.
+Tilpas PageModel til DI af MovieService og kald af CreateMovie().

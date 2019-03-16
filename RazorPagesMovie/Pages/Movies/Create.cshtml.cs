@@ -1,36 +1,45 @@
 ﻿using DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RazorPagesMovie.Data;
+using ServiceLayer.MovieServices;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RazorPagesMovie.Pages.Movies
 {
     public class CreateModel : PageModel
     {
-        private readonly RazorPagesMovieContext _context;
+        private readonly IMovieService _movieService;
+        private readonly IGenreService _genreService;
 
-        public CreateModel(RazorPagesMovieContext context)
+        public CreateModel(IMovieService movieService, IGenreService genreService)
         {
-            _context = context;
+            _movieService = movieService;
+            _genreService = genreService;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            Movie = new Movie
+            Genres = new SelectList(await _genreService.GetGenres(), nameof(Genre.GenreId), nameof(Genre.GenreName));
+
+            Movie = new MovieDto
             {
                 Title = "The Good, the bad, and the ugly",
                 GenreId = 3,
                 Price = 1.19M,
                 ReleaseDate = DateTime.Now
-                //   ,                Rating = "NA"
             };
             return Page();
         }
 
         [BindProperty]
-        public Movie Movie { get; set; }
+        public MovieDto Movie { get; set; }
+
+        public SelectList Genres { get; set; }
+
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -39,8 +48,7 @@ namespace RazorPagesMovie.Pages.Movies
                 return Page();
             }
 
-            //_context.Movie.Add(Movie);
-            await _context.SaveChangesAsync();
+            await _movieService.CreateMovie(Movie);
 
             return RedirectToPage("./Index");
         }

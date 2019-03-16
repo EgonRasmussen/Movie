@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Data;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +15,7 @@ namespace ServiceLayer.MovieServices
             _context = context;
         }
 
-        public  IQueryable<MovieDto> GetMovies()
+        public IQueryable<MovieDto> GetMovies()
         {
             return _context.Movies.Include(m => m.Genre)
                 .Select(m => new MovieDto
@@ -51,6 +51,64 @@ namespace ServiceLayer.MovieServices
             }
 
             return movies;
+        }
+
+        public async Task<MovieDto> GetMovieById(int id)
+        {
+            return await _context.Movies.Include(m => m.Genre)
+                .Where(m => m.MovieId == id)
+                .Select(m => new MovieDto
+                {
+                    Id = m.MovieId,
+                    Title = m.Title,
+                    ReleaseDate = m.ReleaseDate,
+                    Price = m.Price,
+                    GenreId = m.GenreId,
+                    GenreName = m.Genre.GenreName
+                })
+                .SingleOrDefaultAsync();
+        }
+
+
+        public async Task UpdateMovie(MovieDto movieDto)
+        {
+            Movie movie = new Movie
+            {
+                MovieId = movieDto.Id,
+                Title = movieDto.Title,
+                ReleaseDate = movieDto.ReleaseDate,
+                Price = movieDto.Price,
+                GenreId = movieDto.GenreId
+            };
+
+            _context.Attach(movie).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public bool MovieExists(int id)
+        {
+            return _context.Movies.Any(e => e.MovieId == id);
+        }
+
+        public async Task DeleteMovie(int id)
+        {
+            _context.Movies.Remove(new Movie { MovieId = id });
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CreateMovie(MovieDto movieDto)
+        {
+            Movie movie = new Movie
+            {
+                Title = movieDto.Title,
+                ReleaseDate = movieDto.ReleaseDate,
+                Price = movieDto.Price,
+                GenreId = movieDto.GenreId
+            };
+
+            _context.Add(movie);
+            await _context.SaveChangesAsync();
         }
     }
 }

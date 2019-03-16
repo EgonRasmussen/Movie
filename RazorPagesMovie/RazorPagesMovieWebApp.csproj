@@ -5,20 +5,6 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Pages\Movies\Create.cshtml.cs" />
-    <Compile Remove="Pages\Movies\Delete.cshtml.cs" />
-    <Compile Remove="Pages\Movies\Details.cshtml.cs" />
-    <Compile Remove="Pages\Movies\Edit.cshtml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="Pages\Movies\Create.cshtml" />
-    <Content Remove="Pages\Movies\Delete.cshtml" />
-    <Content Remove="Pages\Movies\Details.cshtml" />
-    <Content Remove="Pages\Movies\Edit.cshtml" />
-  </ItemGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
