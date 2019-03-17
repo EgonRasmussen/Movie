@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ServiceLayer.MovieServices;
 using System;
 using System.Collections.Generic;
@@ -37,8 +38,8 @@ namespace RazorPagesMovie.Pages.Movies
         {
             Genres = new SelectList(await _genreService.GetGenres(), nameof(Genre.GenreId), nameof(Genre.GenreName));
 
-            //Movies = _movieService.GetMovies().ToList();
-            Movies = _movieService.GetMovies(SearchString, Convert.ToInt32(MovieGenre)).ToList();
+            //Movies = await _movieService.GetMovies().ToListAsync();
+            Movies = await _movieService.GetMovies(SearchString, Convert.ToInt32(MovieGenre)).ToListAsync();
         }
     }
 }

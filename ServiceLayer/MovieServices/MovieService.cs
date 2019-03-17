@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Data;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServiceLayer.MovieServices
@@ -31,15 +30,17 @@ namespace ServiceLayer.MovieServices
 
         public IQueryable<MovieDto> GetMovies(string searchString, int genreId)
         {
-            var movies = _context.Movies.Select(m => new MovieDto
-            {
-                Id = m.MovieId,
-                Title = m.Title,
-                ReleaseDate = m.ReleaseDate,
-                Price = m.Price,
-                GenreId = m.GenreId,
-                GenreName = m.Genre.GenreName
-            });
+            var movies = _context.Movies
+                .AsNoTracking()
+                .Select(m => new MovieDto
+                {
+                    Id = m.MovieId,
+                    Title = m.Title,
+                    ReleaseDate = m.ReleaseDate,
+                    Price = m.Price,
+                    GenreId = m.GenreId,
+                    GenreName = m.Genre.GenreName
+                });
 
             if (!string.IsNullOrEmpty(searchString))
             {
