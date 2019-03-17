@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ServiceLayer.MovieServices
@@ -49,7 +50,6 @@ namespace ServiceLayer.MovieServices
             {
                 movies = movies.Where(x => x.GenreId == genreId);
             }
-
             return movies;
         }
 
