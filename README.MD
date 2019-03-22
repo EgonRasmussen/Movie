@@ -101,3 +101,25 @@ Tilpas PageModel til DI af MovieService og kald af DeleteMovie(). Tilpas også Ge
 
 Opret metoden CreateMovie(MovieDto movie) i MovieService og implementer den.
 Tilpas PageModel til DI af MovieService og kald af CreateMovie().
+
+
+## AutoMapper
+Tilføj Automapper Nuget til ServiceLayer.
+
+Tilføj Automapper.Extensions.Microsoft.DependencyInjection Nuget til WebApi:
+Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection
+
+Tilføj følgende til StartUp.cs:
+services.AddAutoMapper();
+
+Tilføj følgende klasse til filen Startup.cs:
+```c#
+public class MovieProfile : Profile
+{
+    public MovieProfile()
+    {
+        CreateMap<Movie, MovieDto>().ReverseMap();
+    }
+}
+```
+

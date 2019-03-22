@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLayer.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,7 +7,7 @@ namespace ServiceLayer.MovieServices
 {
     public class MovieDto
     {
-        public int Id { get; set; }
+        public int MovieId { get; set; }
 
         [Required]
         public string Title { get; set; }
@@ -22,5 +23,7 @@ namespace ServiceLayer.MovieServices
 
         [Display(Name = "Genre")]
         public string GenreName { get; set; }
+
+        public Genre Genre { get; set; }
     }
 }

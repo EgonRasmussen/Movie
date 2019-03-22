@@ -47,7 +47,7 @@ namespace RazorPagesMovie.Pages.Movies
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_movieService.MovieExists(Movie.Id))
+                if (!_movieService.MovieExists(Movie.MovieId))
                 {
                     return NotFound();
                 }

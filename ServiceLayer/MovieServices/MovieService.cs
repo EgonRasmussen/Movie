@@ -1,4 +1,6 @@
-﻿using DataLayer.Models;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Data;
 using System.Linq;
@@ -9,39 +11,25 @@ namespace ServiceLayer.MovieServices
     public class MovieService : IMovieService
     {
         private readonly RazorPagesMovieContext _context;
+        private readonly IMapper _mapper;
 
-        public MovieService(RazorPagesMovieContext context)
+        public MovieService(RazorPagesMovieContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public IQueryable<MovieDto> GetMovies()
         {
-            return _context.Movies.Include(m => m.Genre)
+            return _context.Movies
                 .AsNoTracking()
-                .Select(m => new MovieDto
-                {
-                    Id = m.MovieId,
-                    Title = m.Title,
-                    ReleaseDate = m.ReleaseDate,
-                    Price = m.Price,
-                    GenreName = m.Genre.GenreName
-                });
+                .ProjectTo<MovieDto>();
         }
 
         public IQueryable<MovieDto> GetMovies(string searchString, int genreId)
         {
             var movies = _context.Movies
-                .AsNoTracking()
-                .Select(m => new MovieDto
-                {
-                    Id = m.MovieId,
-                    Title = m.Title,
-                    ReleaseDate = m.ReleaseDate,
-                    Price = m.Price,
-                    GenreId = m.GenreId,
-                    GenreName = m.Genre.GenreName
-                });
+                .AsNoTracking();
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -52,36 +40,43 @@ namespace ServiceLayer.MovieServices
             {
                 movies = movies.Where(x => x.GenreId == genreId);
             }
-            return movies;
+            return movies.ProjectTo<MovieDto>();
         }
 
         public async Task<MovieDto> GetMovieById(int id)
         {
-            return await _context.Movies.Include(m => m.Genre)
+            return await _context.Movies
                 .Where(m => m.MovieId == id)
-                .Select(m => new MovieDto
-                {
-                    Id = m.MovieId,
-                    Title = m.Title,
-                    ReleaseDate = m.ReleaseDate,
-                    Price = m.Price,
-                    GenreId = m.GenreId,
-                    GenreName = m.Genre.GenreName
-                })
+                .ProjectTo<MovieDto>()
                 .SingleOrDefaultAsync();
+
+            //return await _context.Movies
+            //    .Where(m => m.MovieId == id)
+            //    .Select(m => new MovieDto
+            //    {
+            //        MovieId = m.MovieId,
+            //        Title = m.Title,
+            //        ReleaseDate = m.ReleaseDate,
+            //        Price = m.Price,
+            //        GenreId = m.GenreId,
+            //        GenreName = m.Genre.GenreName
+            //    })
+            //    .SingleOrDefaultAsync();
         }
 
 
         public async Task UpdateMovie(MovieDto movieDto)
         {
-            Movie movie = new Movie
-            {
-                MovieId = movieDto.Id,
-                Title = movieDto.Title,
-                ReleaseDate = movieDto.ReleaseDate,
-                Price = movieDto.Price,
-                GenreId = movieDto.GenreId
-            };
+            //Movie movie = new Movie
+            //{
+            //    MovieId = movieDto.MovieId,
+            //    Title = movieDto.Title,
+            //    ReleaseDate = movieDto.ReleaseDate,
+            //    Price = movieDto.Price,
+            //    GenreId = movieDto.GenreId
+            //};
+
+            var movie = _mapper.Map<Movie>(movieDto);
 
             _context.Attach(movie).State = EntityState.Modified;
 
@@ -101,13 +96,15 @@ namespace ServiceLayer.MovieServices
 
         public async Task CreateMovie(MovieDto movieDto)
         {
-            Movie movie = new Movie
-            {
-                Title = movieDto.Title,
-                ReleaseDate = movieDto.ReleaseDate,
-                Price = movieDto.Price,
-                GenreId = movieDto.GenreId
-            };
+            //Movie movie = new Movie
+            //{
+            //    Title = movieDto.Title,
+            //    ReleaseDate = movieDto.ReleaseDate,
+            //    Price = movieDto.Price,
+            //    GenreId = movieDto.GenreId
+            //};
+
+            var movie = _mapper.Map<Movie>(movieDto);
 
             _context.Add(movie);
             await _context.SaveChangesAsync();
