@@ -18,6 +18,7 @@ namespace ServiceLayer.MovieServices
         public IQueryable<MovieDto> GetMovies()
         {
             return _context.Movies.Include(m => m.Genre)
+                .AsNoTracking()
                 .Select(m => new MovieDto
                 {
                     Id = m.MovieId,

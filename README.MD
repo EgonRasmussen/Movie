@@ -92,7 +92,7 @@ Lav også helper-metoden bool MovieExists(int id) og implementer den.
 
 Tilpas PageModel til DI af MovieService og kald af UpdateMovie(). Tilpas også Get-delen. Tilføj hidden felt til GenreId.
 
-### Delte Page
+### Delete Page
 
 Opret metoden DeleteMovie(Movie movie) i MovieService og implementer den.
 Tilpas PageModel til DI af MovieService og kald af DeleteMovie(). Tilpas også Get-delen.
