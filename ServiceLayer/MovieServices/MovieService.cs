@@ -24,6 +24,17 @@ namespace ServiceLayer.MovieServices
             return _context.Movies
                 .AsNoTracking()
                 .ProjectTo<MovieDto>();
+
+            //return _context.Movies.Include(m => m.Genre)
+            //   .AsNoTracking()
+            //   .Select(m => new MovieDto
+            //   {
+            //       Id = m.MovieId,
+            //       Title = m.Title,
+            //       ReleaseDate = m.ReleaseDate,
+            //       Price = m.Price,
+            //       GenreName = m.Genre.GenreName
+            //   });
         }
 
         public IQueryable<MovieDto> GetMovies(string searchString, int genreId)
@@ -41,6 +52,16 @@ namespace ServiceLayer.MovieServices
                 movies = movies.Where(x => x.GenreId == genreId);
             }
             return movies.ProjectTo<MovieDto>();
+
+            //    .Select(m => new MovieDto
+            //    {
+            //        Id = m.MovieId,
+            //        Title = m.Title,
+            //        ReleaseDate = m.ReleaseDate,
+            //        Price = m.Price,
+            //        GenreId = m.GenreId,
+            //        GenreName = m.Genre.GenreName
+            //    });
         }
 
         public async Task<MovieDto> GetMovieById(int id)
@@ -50,8 +71,6 @@ namespace ServiceLayer.MovieServices
                 .ProjectTo<MovieDto>()
                 .SingleOrDefaultAsync();
 
-            //return await _context.Movies
-            //    .Where(m => m.MovieId == id)
             //    .Select(m => new MovieDto
             //    {
             //        MovieId = m.MovieId,
