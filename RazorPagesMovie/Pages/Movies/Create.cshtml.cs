@@ -21,36 +21,39 @@ namespace RazorPagesMovie.Pages.Movies
             _genreService = genreService;
         }
 
+        [BindProperty]
+        public Movie Movie { get; set; }
+        public SelectList Genres { get; set; }
+
+
         public async Task<IActionResult> OnGetAsync()
         {
             Genres = new SelectList(await _genreService.GetGenres(), nameof(Genre.GenreId), nameof(Genre.GenreName));
 
-            Movie = new MovieDto
+            Movie = new Movie
             {
-                Title = "The Good, the bad, and the ugly",
-                GenreId = 3,
-                Price = 1.19M,
                 ReleaseDate = DateTime.Now
             };
             return Page();
         }
 
-        [BindProperty]
-        public MovieDto Movie { get; set; }
-
-        public SelectList Genres { get; set; }
-
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (Movie.GenreId == 0)
+            {
+                ModelState.AddModelError("Movie.Genre.GenreName", "Select a Genre");
+            }
+
             if (!ModelState.IsValid)
             {
+                Genres = new SelectList(await _genreService.GetGenres(), nameof(Genre.GenreId), nameof(Genre.GenreName));
                 return Page();
             }
 
             await _movieService.CreateMovie(Movie);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Index"); 
         }
     }
 }

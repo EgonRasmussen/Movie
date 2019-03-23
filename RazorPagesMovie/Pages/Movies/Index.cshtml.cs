@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using ServiceLayer.MovieServices;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RazorPagesMovie.Pages.Movies
@@ -23,7 +22,7 @@ namespace RazorPagesMovie.Pages.Movies
         }
 
         public IList<MovieDto> Movies { get; set; }
-        
+
         // Requires using Microsoft.AspNetCore.Mvc.Rendering;
         [BindProperty(SupportsGet = true)]
         public string SearchString { get; set; }

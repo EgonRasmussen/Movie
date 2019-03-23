@@ -81,13 +81,8 @@ namespace RazorPagesMovie
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Movie, MovieDto>()
-                    .ForMember(dto => dto.GenreName, conf => conf.MapFrom(g => g.Genre.GenreName));
-                    //.ReverseMap()
-                    //.ForPath(s => s.Genre, s => s.Ignore());
-
-                // Med en ekstra regel
-                cfg.CreateMap<MovieDto, Movie>()
-                .ForPath(s => s.Genre, s => s.Ignore());    // virker ikke. Måtte tilføje dummy Genre property til DTO!!!
+                    .ForMember(dto => dto.GenreName, conf => conf.MapFrom(g => g.Genre.GenreName))
+                    .ReverseMap();
             });
 
                       

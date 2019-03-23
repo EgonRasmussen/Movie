@@ -64,39 +64,16 @@ namespace ServiceLayer.MovieServices
             //    });
         }
 
-        public async Task<MovieDto> GetMovieById(int id)
+        public async Task<Movie> GetMovieById(int id)
         {
-            return await _context.Movies
+            return await _context.Movies.Include(m => m.Genre)
                 .Where(m => m.MovieId == id)
-                .ProjectTo<MovieDto>()
                 .SingleOrDefaultAsync();
-
-            //    .Select(m => new MovieDto
-            //    {
-            //        MovieId = m.MovieId,
-            //        Title = m.Title,
-            //        ReleaseDate = m.ReleaseDate,
-            //        Price = m.Price,
-            //        GenreId = m.GenreId,
-            //        GenreName = m.Genre.GenreName
-            //    })
-            //    .SingleOrDefaultAsync();
         }
 
 
-        public async Task UpdateMovie(MovieDto movieDto)
+        public async Task UpdateMovie(Movie movie)
         {
-            //Movie movie = new Movie
-            //{
-            //    MovieId = movieDto.MovieId,
-            //    Title = movieDto.Title,
-            //    ReleaseDate = movieDto.ReleaseDate,
-            //    Price = movieDto.Price,
-            //    GenreId = movieDto.GenreId
-            //};
-
-            var movie = _mapper.Map<Movie>(movieDto);
-
             _context.Attach(movie).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
@@ -107,25 +84,15 @@ namespace ServiceLayer.MovieServices
             return _context.Movies.Any(e => e.MovieId == id);
         }
 
-        public async Task DeleteMovie(int id)
+        public async Task CreateMovie(Movie movie)
         {
-            _context.Movies.Remove(new Movie { MovieId = id });
+            _context.Add(movie);
             await _context.SaveChangesAsync();
         }
 
-        public async Task CreateMovie(MovieDto movieDto)
+        public async Task DeleteMovie(Movie movie)
         {
-            //Movie movie = new Movie
-            //{
-            //    Title = movieDto.Title,
-            //    ReleaseDate = movieDto.ReleaseDate,
-            //    Price = movieDto.Price,
-            //    GenreId = movieDto.GenreId
-            //};
-
-            var movie = _mapper.Map<Movie>(movieDto);
-
-            _context.Add(movie);
+            _context.Attach(movie).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
     }

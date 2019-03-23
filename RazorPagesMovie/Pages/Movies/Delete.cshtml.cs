@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceLayer.MovieServices;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace RazorPagesMovie.Pages.Movies
         }
 
         [BindProperty]
-        public MovieDto Movie { get; set; }
+        public Movie Movie { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -44,7 +45,7 @@ namespace RazorPagesMovie.Pages.Movies
 
             if (Movie != null)
             {
-                await _movieService.DeleteMovie(id.Value);
+                await _movieService.DeleteMovie(Movie);
             }
 
             return RedirectToPage("./Index");

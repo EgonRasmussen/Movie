@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.MovieServices;
 using System.Threading.Tasks;
@@ -9,14 +11,18 @@ namespace RazorPagesMovie.Pages.Movies
     public class EditModel : PageModel
     {
         private readonly IMovieService _movieService;
+        private readonly IGenreService _genreService;
 
-        public EditModel(IMovieService movieService)
+        public EditModel(IMovieService movieService, IGenreService genreService)
         {
             _movieService = movieService;
+            _genreService = genreService;
         }
 
         [BindProperty]
-        public MovieDto Movie { get; set; }
+        public Movie Movie { get; set; }
+
+        public SelectList Genres { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -26,6 +32,8 @@ namespace RazorPagesMovie.Pages.Movies
             }
 
             Movie = await _movieService.GetMovieById(id.Value);
+
+            Genres = new SelectList(await _genreService.GetGenres(), nameof(Genre.GenreId), nameof(Genre.GenreName), Movie.GenreId );
 
             if (Movie == null)
             {

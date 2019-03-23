@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using DataLayer.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServiceLayer.MovieServices
@@ -7,10 +8,10 @@ namespace ServiceLayer.MovieServices
     {
         IQueryable<MovieDto> GetMovies();
         IQueryable<MovieDto> GetMovies(string searchString, int genreId);
-        Task <MovieDto> GetMovieById(int id);
+        Task <Movie> GetMovieById(int id);
         bool MovieExists(int id);
-        Task UpdateMovie(MovieDto movie);
-        Task DeleteMovie(int id);
-        Task CreateMovie(MovieDto movie);
+        Task UpdateMovie(Movie movie);
+        Task CreateMovie(Movie movie);
+        Task DeleteMovie(Movie movie);
     }
 }

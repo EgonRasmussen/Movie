@@ -8,6 +8,7 @@ namespace DataLayer.Models
         public int GenreId { get; set; }
 
         [Required]
+        [Display(Name = "Genre Name")]
         public string GenreName { get; set; }
 
 

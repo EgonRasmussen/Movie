@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DataLayer.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ServiceLayer.MovieServices;
 using System.Threading.Tasks;
@@ -14,8 +15,7 @@ namespace RazorPagesMovie.Pages.Movies
             _movieService = movieService;
         }
 
-
-        public MovieDto Movie { get; set; }
+        public Movie Movie { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
