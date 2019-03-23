@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using DataLayer.Models;
+﻿using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Data;
 using System.Linq;
@@ -11,30 +9,24 @@ namespace ServiceLayer.MovieServices
     public class MovieService : IMovieService
     {
         private readonly RazorPagesMovieContext _context;
-        private readonly IMapper _mapper;
 
-        public MovieService(RazorPagesMovieContext context, IMapper mapper)
+        public MovieService(RazorPagesMovieContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public IQueryable<MovieDto> GetMovies()
         {
-            return _context.Movies
-                .AsNoTracking()
-                .ProjectTo<MovieDto>();
-
-            //return _context.Movies.Include(m => m.Genre)
-            //   .AsNoTracking()
-            //   .Select(m => new MovieDto
-            //   {
-            //       Id = m.MovieId,
-            //       Title = m.Title,
-            //       ReleaseDate = m.ReleaseDate,
-            //       Price = m.Price,
-            //       GenreName = m.Genre.GenreName
-            //   });
+            return _context.Movies.Include(m => m.Genre)
+               .AsNoTracking()
+               .Select(m => new MovieDto
+               {
+                   MovieId = m.MovieId,
+                   Title = m.Title,
+                   ReleaseDate = m.ReleaseDate,
+                   Price = m.Price,
+                   GenreName = m.Genre.GenreName
+               });
         }
 
         public IQueryable<MovieDto> GetMovies(string searchString, int genreId)
@@ -51,17 +43,16 @@ namespace ServiceLayer.MovieServices
             {
                 movies = movies.Where(x => x.GenreId == genreId);
             }
-            return movies.ProjectTo<MovieDto>();
 
-            //    .Select(m => new MovieDto
-            //    {
-            //        Id = m.MovieId,
-            //        Title = m.Title,
-            //        ReleaseDate = m.ReleaseDate,
-            //        Price = m.Price,
-            //        GenreId = m.GenreId,
-            //        GenreName = m.Genre.GenreName
-            //    });
+            return movies.Select(m => new MovieDto
+            {
+                MovieId = m.MovieId,
+                Title = m.Title,
+                ReleaseDate = m.ReleaseDate,
+                Price = m.Price,
+                GenreId = m.GenreId,
+                GenreName = m.Genre.GenreName
+            });
         }
 
         public async Task<Movie> GetMovieById(int id)

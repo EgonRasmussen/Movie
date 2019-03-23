@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -45,8 +39,6 @@ namespace RazorPagesMovie
 
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IGenreService, GenreService>();
-
-            services.AddAutoMapper(typeof(RazorPagesMovie.Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,21 +63,5 @@ namespace RazorPagesMovie
             app.UseMvc();
         }
 
-    }
-
-    public class MovieProfile : Profile
-    {
-        // http://docs.automapper.org/en/stable/Queryable-Extensions.html og https://docs.automapper.org/en/stable/Reverse-Mapping-and-Unflattening.html
-        public MovieProfile()
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Movie, MovieDto>()
-                    .ForMember(dto => dto.GenreName, conf => conf.MapFrom(g => g.Genre.GenreName))
-                    .ReverseMap();
-            });
-
-                      
-        }
     }
 }
