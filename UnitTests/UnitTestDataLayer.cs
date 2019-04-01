@@ -1,6 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.EntityFrameworkCore;
 using RazorPagesMovie.Data;
 using System.Linq;
+using UnitTests.Utilities;
+using DataLayer.Models;
 
 namespace UnitTests
 {
@@ -8,15 +11,16 @@ namespace UnitTests
     public class UnitTestDataLayer
     {
         [TestMethod]
-        public void QueryOfMovies()
+        public void GetMovies_Count_Title_GenreName()
         {
-            using (var db = new RazorPagesMovieContext(Utilities.TestDbContextOptions()))
+            using (var db = new RazorPagesMovieContext(SqlContext.TestDbContextOptions()))
             {
                 // ARRANGE
-                Utilities.Initialize(db);
+                db.Database.EnsureDeleted();
+                db.Database.EnsureCreated();
 
                 // ACT
-                var movies = db.Movies.ToList();
+                var movies = db.Movies.Include(g => g.Genre).ToList();
 
                 // ASSERT
                 Assert.AreEqual(4, movies.Count());
@@ -26,23 +30,22 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void UpdateOfMovie()
+        public void UpdateMovie_MovieTitle_Genre()
         {
-            using (var db = new RazorPagesMovieContext(Utilities.TestDbContextOptions()))
+            using (var db = new RazorPagesMovieContext(SqlContext.TestDbContextOptions()))
             {
                 // ARRANGE
-                Utilities.Initialize(db);
 
                 // ACT
-                var movie = db.Movies.First();
+                Movie movie = db.Movies.First();
                 movie.Title = "New Title";
                 movie.GenreId = 3;
                 db.SaveChanges();
 
                 // ASSERT
-                movie = db.Movies.First();
+                movie = db.Movies.Include(g => g.Genre).First();
                 Assert.AreEqual("New Title", movie.Title);
-                Assert.AreEqual(3, movie.GenreId);
+                Assert.AreEqual("Western", movie.Genre.GenreName);
             }
         }
     }
