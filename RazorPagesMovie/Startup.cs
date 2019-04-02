@@ -38,11 +38,15 @@ namespace RazorPagesMovie
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped<IGenreService, GenreService>();
 
+            // MiniProfiler
             services.AddMiniProfiler(options =>
            {
                options.PopupShowTimeWithChildren = true;
            })
             .AddEntityFramework();
+
+            // Caching
+            services.AddMemoryCache();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -50,7 +54,7 @@ namespace RazorPagesMovie
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
             }
             else
             {
