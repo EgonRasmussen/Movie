@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RazorPagesMovie.Data;
 using ServiceLayer.MovieServices;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UnitTests.Utilities;
@@ -12,14 +11,19 @@ namespace UnitTests
     [TestClass]
     public class UnitTestServiceLayer
     {
+        MovieService movieService;
+
+        public UnitTestServiceLayer()
+        {
+            // ARRANGE - constructor is executed every time a TestMethod is called!
+            var context = new RazorPagesMovieContext(InMemoryContext.TestDbContextOptions());
+            context.Database.EnsureCreated();
+            movieService = new MovieService(context);
+        }
+
         [TestMethod]
         public async Task GetSingleMovieByService_Title_GenreName()
         {
-            // ARRANGE
-            var context = new RazorPagesMovieContext(InMemoryContext.TestDbContextOptions());
-            context.Database.EnsureCreated();
-            MovieService movieService = new MovieService(context);
-
             // ACT
             Movie movie = await movieService.GetMovieById(1);
 
@@ -31,11 +35,6 @@ namespace UnitTests
         [TestMethod]
         public void GetAllMoviesByService_Count()
         {
-            // ARRANGE
-            var context = new RazorPagesMovieContext(InMemoryContext.TestDbContextOptions());
-            context.Database.EnsureCreated();
-            MovieService movieService = new MovieService(context);
-
             // ACT
             var movies = movieService.GetMovies();
 
@@ -46,11 +45,6 @@ namespace UnitTests
         [TestMethod]
         public async Task UpdateMovieByService_MovieTitle_Genre()
         {
-            // ARRANGE
-            var context = new RazorPagesMovieContext(InMemoryContext.TestDbContextOptions());
-            context.Database.EnsureCreated();
-            MovieService movieService = new MovieService(context);
-
             // ACT
             Movie movie = await movieService.GetMovieById(1);
             movie.Title = "Update";
