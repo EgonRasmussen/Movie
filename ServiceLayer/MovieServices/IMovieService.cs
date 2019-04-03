@@ -13,5 +13,7 @@ namespace ServiceLayer.MovieServices
         Task UpdateMovie(Movie movie);
         Task CreateMovie(Movie movie);
         Task DeleteMovie(Movie movie);
+
+        int GetCountOfMovies();
     }
 }

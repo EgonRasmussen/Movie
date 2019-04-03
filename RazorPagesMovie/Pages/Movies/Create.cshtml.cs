@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
 using RazorPagesMovie.Data;
 using ServiceLayer.MovieServices;
 using System;
@@ -14,11 +15,13 @@ namespace RazorPagesMovie.Pages.Movies
     {
         private readonly IMovieService _movieService;
         private readonly IGenreService _genreService;
+        private readonly IMemoryCache _cache;
 
-        public CreateModel(IMovieService movieService, IGenreService genreService)
+        public CreateModel(IMovieService movieService, IGenreService genreService, IMemoryCache cache)
         {
             _movieService = movieService;
             _genreService = genreService;
+            _cache = cache;
         }
 
         [BindProperty]
@@ -52,6 +55,9 @@ namespace RazorPagesMovie.Pages.Movies
             }
 
             await _movieService.CreateMovie(Movie);
+
+            // Invalidate cache
+            _cache.Remove("MoviesKey");
 
             return RedirectToPage("./Index"); 
         }

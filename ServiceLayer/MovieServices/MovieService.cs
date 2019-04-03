@@ -86,5 +86,10 @@ namespace ServiceLayer.MovieServices
             _context.Attach(movie).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
         }
+
+        public int GetCountOfMovies()
+        {
+            return _context.Movies.Count();
+        }
     }
 }

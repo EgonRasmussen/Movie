@@ -51,7 +51,13 @@
     </div>
 
     <footer class="border-top footer text-muted">
+       
         <div class="container">
+
+            <cache expires-after="@TimeSpan.FromSeconds(20)">
+                <vc:movie-count></vc:movie-count>
+            </cache>
+
             &copy; 2019 - RazorPagesMovie - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
