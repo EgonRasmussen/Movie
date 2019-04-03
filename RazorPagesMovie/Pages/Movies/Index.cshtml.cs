@@ -48,8 +48,12 @@ namespace RazorPagesMovie.Pages.Movies
                 genreCacheEntry = new SelectList(await _genreService.GetGenres(), nameof(Genre.GenreId), nameof(Genre.GenreName));
             }
 
-            // Save data in cache.
-            _cache.Set("GenresKey", genreCacheEntry);
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    // Keep in cache for this time, reset time if accessed.
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(5));
+
+            // Save data in cache with Option
+            _cache.Set("GenresKey", genreCacheEntry, cacheEntryOptions);
             // Bind data to View
             Genres = genreCacheEntry;
             #endregion
@@ -60,6 +64,7 @@ namespace RazorPagesMovie.Pages.Movies
             #region MOVIES CACHE (The short Road)
             Movies = await _cache.GetOrCreate("MoviesKey", async entry =>
             {
+                entry.SlidingExpiration = TimeSpan.FromSeconds(10);
                 return await _movieService.GetMovies(SearchString, Convert.ToInt32(MovieGenre)).ToListAsync();
             });
            #endregion
