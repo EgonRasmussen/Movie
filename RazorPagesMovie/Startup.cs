@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using RazorPagesMovie.Data;
 
 namespace RazorPagesMovie
@@ -24,7 +25,7 @@ namespace RazorPagesMovie
                     options.UseSqlServer(Configuration.GetConnectionString("RazorPagesMovieContext")));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
